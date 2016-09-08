@@ -68,10 +68,8 @@ public class Locator {
         //声明LocationClient类
         mLocationClient = new LocationClient(mContext);
         MyLocationListener mLocationListener = new MyLocationListener();
-
         //注册监听函数
         mLocationClient.registerLocationListener(mLocationListener);
-
         //配置定位SDK参数
         LocationClientOption option = new LocationClientOption();
         option.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy);//可选，默认高精度，设置定位模式，高精度，低功耗，仅设备

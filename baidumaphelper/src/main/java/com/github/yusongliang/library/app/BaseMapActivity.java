@@ -85,9 +85,7 @@ public abstract class BaseMapActivity extends AppCompatActivity implements Baidu
      */
     protected void setLocateData() {
         mBaiduMap.setMyLocationConfigeration(new MyLocationConfiguration(
-                MyLocationConfiguration.LocationMode.NORMAL
-                , false
-                , mMyLocBmpDescriptor
+                MyLocationConfiguration.LocationMode.NORMAL, true, mMyLocBmpDescriptor
         ));
     }
 
