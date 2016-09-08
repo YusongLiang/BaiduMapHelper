@@ -7,10 +7,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.baidu.mapapi.map.BaiduMap;
+
 /**
  * 基础定位Fragment
  */
-public abstract class BaseMapFragment extends Fragment{
+public abstract class BaseMapFragment extends Fragment implements BaiduMap.OnMapLoadedCallback {
+    private BaiduMap mBaiduMap;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -19,5 +23,24 @@ public abstract class BaseMapFragment extends Fragment{
 
     protected abstract View initView(LayoutInflater inflater, ViewGroup container);
 
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        mBaiduMap = initBaiduMap();
+        initData();
+        initListener();
+    }
 
+    protected abstract BaiduMap initBaiduMap();
+
+    protected void initData() {
+    }
+
+    protected void initListener(){
+        mBaiduMap.setOnMapLoadedCallback(this);
+    }
+
+    @Override
+    public void onMapLoaded() {
+    }
 }
