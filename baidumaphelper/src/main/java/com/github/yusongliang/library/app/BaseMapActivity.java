@@ -8,8 +8,10 @@ import android.view.MotionEvent;
 
 import com.baidu.mapapi.SDKInitializer;
 import com.baidu.mapapi.map.BaiduMap;
+import com.baidu.mapapi.map.BitmapDescriptor;
 import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.map.Marker;
+import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.UiSettings;
 import com.github.yusongliang.library.BuildConfig;
 import com.github.yusongliang.library.config.TagConfig;
@@ -18,8 +20,11 @@ import com.github.yusongliang.library.config.TagConfig;
  * 基础定位Activity
  */
 public abstract class BaseMapActivity extends AppCompatActivity implements BaiduMap.OnMapLoadedCallback, BaiduMap.OnMapTouchListener, BaiduMap.OnMarkerClickListener {
+    private static final float MAP_MAX_ZOOM = 21.0f;
+    private static final float MAP_MIN_ZOOM = 5.0f;
     private MapView mMapView;
     private BaiduMap mBaiduMap;
+    private BitmapDescriptor mMyLocBmpDescriptor;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -53,6 +58,37 @@ public abstract class BaseMapActivity extends AppCompatActivity implements Baidu
         if (mMapView == null) throw new IllegalArgumentException("MapView不能为空");
         mBaiduMap = mMapView.getMap();
         initMapUi(mBaiduMap.getUiSettings());
+        initMapState();
+    }
+
+    /**
+     * 设置地图其他状态
+     */
+    protected void initMapState() {
+        mBaiduMap.setMaxAndMinZoomLevel(MAP_MAX_ZOOM, MAP_MIN_ZOOM);//设置最大、最小缩放
+        mBaiduMap.setMapType(BaiduMap.MAP_TYPE_NORMAL);//基本地图
+        mBaiduMap.setMyLocationEnabled(true);
+        setLocateData();
+    }
+
+    /**
+     * 设置我的位置图标
+     *
+     * @param myLocBmpDescriptor 设置我的位置图标,为null的话显示默认图标
+     */
+    public void setMyLocBmpDescriptor(@Nullable BitmapDescriptor myLocBmpDescriptor) {
+        mMyLocBmpDescriptor = myLocBmpDescriptor;
+    }
+
+    /**
+     * 设置定位数据
+     */
+    protected void setLocateData() {
+        mBaiduMap.setMyLocationConfigeration(new MyLocationConfiguration(
+                MyLocationConfiguration.LocationMode.NORMAL
+                , false
+                , mMyLocBmpDescriptor
+        ));
     }
 
     /**
