@@ -16,7 +16,6 @@ public class FunctionListAdapter extends RecyclerView.Adapter<FunctionListAdapte
 
     @Override
     public void onBindViewHolder(FunctionListAdapter.ViewHolder holder, int position) {
-
     }
 
     @Override

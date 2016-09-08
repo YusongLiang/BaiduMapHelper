@@ -1,6 +1,5 @@
 package com.github.yusongliang.baidumaphelper.view;
 
-import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.MapView;
 import com.github.yusongliang.baidumaphelper.R;
 import com.github.yusongliang.library.app.BaseMapActivity;
@@ -10,25 +9,18 @@ import com.github.yusongliang.library.app.BaseMapActivity;
  */
 public class MapActivity extends BaseMapActivity {
 
-    private MapView mMapView;
-
     @Override
-    protected int initContentView() {
+    protected int getContentView() {
         return R.layout.activity_base_map;
     }
 
     @Override
-    protected void initView() {
-        mMapView = (MapView) findViewById(R.id.map_view);
-    }
-
-    @Override
-    protected BaiduMap initBaiduMap() {
-        return mMapView.getMap();
+    protected MapView initMapView() {
+        return (MapView) findViewById(R.id.map_view);
     }
 
     @Override
     protected void initListener() {
-
+        super.initListener();
     }
 }
