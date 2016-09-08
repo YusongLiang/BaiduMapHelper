@@ -4,22 +4,23 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.MotionEvent;
 
 import com.baidu.mapapi.SDKInitializer;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptor;
+import com.baidu.mapapi.map.MapPoi;
 import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.map.Marker;
 import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.UiSettings;
+import com.baidu.mapapi.model.LatLng;
 import com.github.yusongliang.library.BuildConfig;
 import com.github.yusongliang.library.config.TagConfig;
 
 /**
  * 基础定位Activity
  */
-public abstract class BaseMapActivity extends AppCompatActivity implements BaiduMap.OnMapLoadedCallback, BaiduMap.OnMapTouchListener, BaiduMap.OnMarkerClickListener {
+public abstract class BaseMapActivity extends AppCompatActivity implements BaiduMap.OnMapLoadedCallback, BaiduMap.OnMarkerClickListener, BaiduMap.OnMapClickListener, BaiduMap.OnMyLocationClickListener {
     private static final float MAP_MAX_ZOOM = 21.0f;
     private static final float MAP_MIN_ZOOM = 5.0f;
     private MapView mMapView;
@@ -30,7 +31,7 @@ public abstract class BaseMapActivity extends AppCompatActivity implements Baidu
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         SDKInitializer.initialize(getApplicationContext());
-        setContentView(getContentView());
+        setContentView(getContentViewResId());
         if (BuildConfig.DEBUG) Log.d(TagConfig.LOG_TAG, getClass().getSimpleName());
         initView();
         initMap();
@@ -42,7 +43,7 @@ public abstract class BaseMapActivity extends AppCompatActivity implements Baidu
      *
      * @return 布局文件id
      */
-    protected abstract int getContentView();
+    protected abstract int getContentViewResId();
 
     /**
      * 声明控件
@@ -111,8 +112,9 @@ public abstract class BaseMapActivity extends AppCompatActivity implements Baidu
 
     protected void initListener() {
         mBaiduMap.setOnMapLoadedCallback(this);
-        mBaiduMap.setOnMapTouchListener(this);
         mBaiduMap.setOnMarkerClickListener(this);
+        mBaiduMap.setOnMapClickListener(this);
+        mBaiduMap.setOnMyLocationClickListener(this);
     }
 
     @Override
@@ -120,11 +122,21 @@ public abstract class BaseMapActivity extends AppCompatActivity implements Baidu
     }
 
     @Override
-    public void onTouch(MotionEvent motionEvent) {
+    public boolean onMarkerClick(Marker marker) {
+        return false;
     }
 
     @Override
-    public boolean onMarkerClick(Marker marker) {
+    public void onMapClick(LatLng latLng) {
+    }
+
+    @Override
+    public boolean onMapPoiClick(MapPoi mapPoi) {
+        return false;
+    }
+
+    @Override
+    public boolean onMyLocationClick() {
         return false;
     }
 

@@ -10,7 +10,7 @@ import com.github.yusongliang.library.app.BaseMapActivity;
 public class MapActivity extends BaseMapActivity {
 
     @Override
-    protected int getContentView() {
+    protected int getContentViewResId() {
         return R.layout.activity_base_map;
     }
 
