@@ -141,6 +141,5 @@ public class Locator {
          */
         protected void onLocated(BDLocation bdLocation) {
         }
-
     }
 }

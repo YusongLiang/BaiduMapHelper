@@ -35,6 +35,11 @@ public abstract class BaseMapFragment extends Fragment implements BaiduMap.OnMap
         return mView;
     }
 
+    /**
+     * 获取布局文件id
+     *
+     * @return 布局文件id
+     */
     protected abstract int getContentViewResId();
 
     /**
@@ -66,7 +71,11 @@ public abstract class BaseMapFragment extends Fragment implements BaiduMap.OnMap
         initMapState();
     }
 
-
+    /**
+     * 设置地图ui
+     *
+     * @param uiSettings 用于设置ui的UiSettings对象
+     */
     protected void initMapUi(UiSettings uiSettings) {
         mBaiduMap.setMaxAndMinZoomLevel(MAP_MAX_ZOOM, MAP_MIN_ZOOM);//设置最大、最小缩放
         mBaiduMap.setMapType(BaiduMap.MAP_TYPE_NORMAL);//基本地图
@@ -140,5 +149,23 @@ public abstract class BaseMapFragment extends Fragment implements BaiduMap.OnMap
     @Override
     public boolean onMyLocationClick() {
         return false;
+    }
+
+    @Override
+    public void onResume() {
+        mTextureMapView.onResume();
+        super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        mTextureMapView.onPause();
+        super.onPause();
+    }
+
+    @Override
+    public void onDestroy() {
+        mTextureMapView.onDestroy();
+        super.onDestroy();
     }
 }

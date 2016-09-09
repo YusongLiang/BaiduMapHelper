@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">BaiduMapHelper</string>
+    <string name="main_label">功能演示列表</string>
 </resources>
