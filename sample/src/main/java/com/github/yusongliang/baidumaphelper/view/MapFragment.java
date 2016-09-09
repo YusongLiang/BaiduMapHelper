@@ -1,6 +1,11 @@
 package com.github.yusongliang.baidumaphelper.view;
 
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.baidu.location.BDLocation;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
@@ -36,20 +41,33 @@ public class MapFragment extends BaseMapFragment {
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser //Fragment对于用户可见
+                && isFirstVisible //是否为第一次可见
+                && getBaiduMap() != null) //是否已创建BaiduMap对象（首页Fragment执行该方法会在onCreate之前，此时BaiduMap尚未创建，不会显示位置图标）
+            animateToCurrentPosition();
+    }
 
-        //当该Fragment对于用户首次可见时，定位到当前位置，并终止定位
-        if (isVisibleToUser && isFirstVisible) {
-            mLocator = Locator.getInstance(SampleApplication.getContext(), getBaiduMap(), new Locator.OnLocatedListener() {
+    @Override
+    protected void initMapState() {
+        super.initMapState();
+        //当显示首页Fragment时，setUserVisibleHint中未执行animateToCurrentPosition，则会在此处执行
+        if (isFirstVisible) animateToCurrentPosition();
+    }
 
-                @Override
-                protected void onFirstLocate(BDLocation bdLocation) {
-                    getBaiduMap().animateMapStatus(MapStatusUpdateFactory.newLatLngZoom(
-                            new LatLng(bdLocation.getLatitude(), bdLocation.getLongitude()), 18));
-                    mLocator.stop();
-                }
-            });
-            mLocator.start();
-            isFirstVisible = false;
-        }
+    /**
+     * 移动到当前位置
+     */
+    private void animateToCurrentPosition() {
+        mLocator = Locator.getInstance(SampleApplication.getContext(), getBaiduMap(), new Locator.OnLocatedListener() {
+
+            @Override
+            protected void onFirstLocate(BDLocation bdLocation) {
+                getBaiduMap().animateMapStatus(MapStatusUpdateFactory.newLatLngZoom(
+                        new LatLng(bdLocation.getLatitude(), bdLocation.getLongitude()), 18));
+                mLocator.stop();
+            }
+        });
+        mLocator.start();
+        isFirstVisible = false;
     }
 }
