@@ -68,26 +68,6 @@ public abstract class BaseMapActivity extends AppCompatActivity implements Baidu
     protected void initMapState() {
         mBaiduMap.setMaxAndMinZoomLevel(MAP_MAX_ZOOM, MAP_MIN_ZOOM);//设置最大、最小缩放
         mBaiduMap.setMapType(BaiduMap.MAP_TYPE_NORMAL);//基本地图
-        mBaiduMap.setMyLocationEnabled(true);
-        setLocateData();
-    }
-
-    /**
-     * 设置我的位置图标
-     *
-     * @param myLocBmpDescriptor 设置我的位置图标,为null的话显示默认图标
-     */
-    public void setMyLocBmpDescriptor(@Nullable BitmapDescriptor myLocBmpDescriptor) {
-        mMyLocBmpDescriptor = myLocBmpDescriptor;
-    }
-
-    /**
-     * 设置定位数据
-     */
-    protected void setLocateData() {
-        mBaiduMap.setMyLocationConfigeration(new MyLocationConfiguration(
-                MyLocationConfiguration.LocationMode.NORMAL, true, mMyLocBmpDescriptor
-        ));
     }
 
     /**

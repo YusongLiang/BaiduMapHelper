@@ -85,18 +85,9 @@ public abstract class BaseMapFragment extends Fragment implements BaiduMap.OnMap
     }
 
     /**
-     * 设置我的位置图标
-     *
-     * @param myLocBmpDescriptor 设置我的位置图标,为null的话显示默认图标
-     */
-    public void setMyLocBmpDescriptor(@Nullable BitmapDescriptor myLocBmpDescriptor) {
-        mMyLocBmpDescriptor = myLocBmpDescriptor;
-    }
-
-    /**
      * 设置定位数据
      */
-    private void setLocateData() {
+    protected void setLocateData() {
         mBaiduMap.setMyLocationConfigeration(new MyLocationConfiguration(
                 MyLocationConfiguration.LocationMode.NORMAL, true, mMyLocBmpDescriptor
         ));
@@ -118,6 +109,15 @@ public abstract class BaseMapFragment extends Fragment implements BaiduMap.OnMap
      * @return 布局文件id
      */
     protected abstract TextureMapView initMapView(View v);
+
+    /**
+     * 设置我的位置图标
+     *
+     * @param myLocBmpDescriptor 设置我的位置图标,为null的话显示默认图标
+     */
+    public void setMyLocBmpDescriptor(@Nullable BitmapDescriptor myLocBmpDescriptor) {
+        mMyLocBmpDescriptor = myLocBmpDescriptor;
+    }
 
     protected void initData() {
     }

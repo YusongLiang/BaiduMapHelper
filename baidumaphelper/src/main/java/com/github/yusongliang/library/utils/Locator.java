@@ -1,6 +1,7 @@
 package com.github.yusongliang.library.utils;
 
 import android.content.Context;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.baidu.location.BDLocation;
@@ -8,6 +9,8 @@ import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 import com.baidu.mapapi.map.BaiduMap;
+import com.baidu.mapapi.map.BitmapDescriptor;
+import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.MyLocationData;
 import com.github.yusongliang.library.BuildConfig;
 import com.github.yusongliang.library.config.TagConfig;
@@ -27,6 +30,7 @@ public class Locator {
     private boolean isFirst = true;
     private static Locator mLocator;
     private static OnLocatedListener mOnLocatedListener;
+    private BitmapDescriptor mMyLocBmpDescriptor;
 
     private Locator() {
     }
@@ -131,6 +135,10 @@ public class Locator {
      * 开启定位
      */
     public void start() {
+        if (mBaiduMap != null) {
+            mBaiduMap.setMyLocationEnabled(true);
+            setLocateData();
+        }
         if (mLocationClient == null) initLocation();
         if (!mLocationClient.isStarted()) {
             Log.d(TagConfig.LOG_TAG, "开启定位");
@@ -147,6 +155,24 @@ public class Locator {
             mLocationClient.stop();
             isFirst = true;
         }
+    }
+
+    /**
+     * 设置我的位置图标
+     *
+     * @param myLocBmpDescriptor 设置我的位置图标,为null的话显示默认图标
+     */
+    public void setMyLocBmpDescriptor(@Nullable BitmapDescriptor myLocBmpDescriptor) {
+        mMyLocBmpDescriptor = myLocBmpDescriptor;
+    }
+
+    /**
+     * 设置定位数据
+     */
+    protected void setLocateData() {
+        mBaiduMap.setMyLocationConfigeration(new MyLocationConfiguration(
+                MyLocationConfiguration.LocationMode.NORMAL, true, mMyLocBmpDescriptor
+        ));
     }
 
     /**
