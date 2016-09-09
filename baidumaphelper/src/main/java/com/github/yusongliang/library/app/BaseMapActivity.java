@@ -117,6 +117,10 @@ public abstract class BaseMapActivity extends AppCompatActivity implements Baidu
         mBaiduMap.setOnMyLocationClickListener(this);
     }
 
+    protected BaiduMap getBaiduMap() {
+        return mBaiduMap;
+    }
+
     @Override
     public void onMapLoaded() {
     }

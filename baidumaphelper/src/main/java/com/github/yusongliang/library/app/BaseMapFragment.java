@@ -77,10 +77,11 @@ public abstract class BaseMapFragment extends Fragment implements BaiduMap.OnMap
      * @param uiSettings 用于设置ui的UiSettings对象
      */
     protected void initMapUi(UiSettings uiSettings) {
-        mBaiduMap.setMaxAndMinZoomLevel(MAP_MAX_ZOOM, MAP_MIN_ZOOM);//设置最大、最小缩放
-        mBaiduMap.setMapType(BaiduMap.MAP_TYPE_NORMAL);//基本地图
-        mBaiduMap.setMyLocationEnabled(true);
-        setLocateData();
+        uiSettings.setOverlookingGesturesEnabled(false);//俯瞰手势关闭
+        uiSettings.setRotateGesturesEnabled(false);//旋转手势关闭
+        uiSettings.setCompassEnabled(false);//指南针关闭
+        uiSettings.setScrollGesturesEnabled(true);//滑动手势开启
+        uiSettings.setZoomGesturesEnabled(true);//缩放手势开启
     }
 
     /**
@@ -126,6 +127,10 @@ public abstract class BaseMapFragment extends Fragment implements BaiduMap.OnMap
         mBaiduMap.setOnMapClickListener(this);
         mBaiduMap.setOnMarkerClickListener(this);
         mBaiduMap.setOnMyLocationClickListener(this);
+    }
+
+    public BaiduMap getBaiduMap() {
+        return mBaiduMap;
     }
 
     @Override
