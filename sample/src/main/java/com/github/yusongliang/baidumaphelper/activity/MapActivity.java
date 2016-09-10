@@ -1,4 +1,4 @@
-package com.github.yusongliang.baidumaphelper.view;
+package com.github.yusongliang.baidumaphelper.activity;
 
 import com.baidu.location.BDLocation;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
@@ -14,6 +14,9 @@ import com.github.yusongliang.library.utils.Locator;
  */
 public class MapActivity extends BaseMapActivity {
 
+    /**
+     * 定位器对象
+     */
     private Locator mLocator;
 
     @Override

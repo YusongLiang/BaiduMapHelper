@@ -25,9 +25,12 @@
         android:theme="@style/AppTheme">
 
         <!--此处需替换为自己的申请的Key值-->
+        <!--<meta-data
+            android:name="com.baidu.lbsapi.API_KEY"
+            android:value="dclg9zIaveuFl1EHWsrA5sV41yefSPbB" />-->
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="dclg9zIaveuFl1EHWsrA5sV41yefSPbB" />
+            android:value="yaa3MjGCWNWoPmxqE7myF2ja7uLqAopR" />
 
         <!--百度地图定位服务-->
         <service
@@ -36,7 +39,7 @@
             android:process=":remote" />
 
         <activity
-            android:name=".view.MainActivity"
+            android:name=".activity.MainActivity"
             android:label="@string/main_label"
             android:theme="@style/AppTheme.DarkActionBar">
             <intent-filter>
@@ -45,8 +48,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.MapActivity" />
-        <activity android:name=".view.MapFragmentActivity" />
+        <activity android:name=".activity.MapActivity" />
+        <activity android:name=".activity.PagerMapFragmentActivity" />
+        <activity android:name=".activity.MapFragmentActivity" />
     </application>
 
 </manifest>

@@ -1,4 +1,4 @@
-package com.github.yusongliang.baidumaphelper.view;
+package com.github.yusongliang.baidumaphelper.activity;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +10,9 @@ import com.github.yusongliang.baidumaphelper.adapter.FunctionListAdapter;
 
 public class MainActivity extends AppCompatActivity {
 
+    /**
+     * 功能列表
+     */
     private RecyclerView mRvFunction;
 
     @Override
@@ -30,5 +33,4 @@ public class MainActivity extends AppCompatActivity {
         FunctionListAdapter adapter = new FunctionListAdapter(this);
         mRvFunction.setAdapter(adapter);
     }
-
 }

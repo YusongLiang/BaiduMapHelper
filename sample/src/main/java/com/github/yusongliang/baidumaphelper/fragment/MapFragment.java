@@ -1,11 +1,6 @@
-package com.github.yusongliang.baidumaphelper.view;
+package com.github.yusongliang.baidumaphelper.fragment;
 
-import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
 import com.baidu.location.BDLocation;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
@@ -17,10 +12,13 @@ import com.github.yusongliang.library.app.BaseMapFragment;
 import com.github.yusongliang.library.utils.Locator;
 
 /**
- * 地图Fragment
+ * Viewpager加载地图Fragment
  */
 public class MapFragment extends BaseMapFragment {
 
+    /**
+     * 定位器对象
+     */
     private Locator mLocator;
 
     /**
@@ -51,11 +49,11 @@ public class MapFragment extends BaseMapFragment {
     protected void initMapState() {
         super.initMapState();
         //当显示首页Fragment时，setUserVisibleHint中未执行animateToCurrentPosition，则会在此处执行
-        if (isFirstVisible) animateToCurrentPosition();
+        if (getUserVisibleHint() && isFirstVisible) animateToCurrentPosition();
     }
 
     /**
-     * 移动到当前位置
+     * 移动到当前位置,并将缩放设为18
      */
     private void animateToCurrentPosition() {
         mLocator = Locator.getInstance(SampleApplication.getContext(), getBaiduMap(), new Locator.OnLocatedListener() {
@@ -65,9 +63,15 @@ public class MapFragment extends BaseMapFragment {
                 getBaiduMap().animateMapStatus(MapStatusUpdateFactory.newLatLngZoom(
                         new LatLng(bdLocation.getLatitude(), bdLocation.getLongitude()), 18));
                 mLocator.stop();
+                isFirstVisible = false;
             }
         });
         mLocator.start();
-        isFirstVisible = false;
+    }
+
+    @Override
+    public void onMapLoaded() {
+        super.onMapLoaded();
+
     }
 }

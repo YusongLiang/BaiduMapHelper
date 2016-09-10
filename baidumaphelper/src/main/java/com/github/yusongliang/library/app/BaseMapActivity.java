@@ -46,7 +46,7 @@ public abstract class BaseMapActivity extends AppCompatActivity implements Baidu
     protected abstract int getContentViewResId();
 
     /**
-     * 声明控件
+     * 执行声明控件等先于地图设置的操作
      */
     protected void initView() {
     }

@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * MapFragment演示Viewpager适配器
+ * 用于演示Viewpager加载MapFragment的FragmentPagerAdapter
  */
 public class MapPagerAdapter extends FragmentPagerAdapter {
     List<Fragment> mFragments;

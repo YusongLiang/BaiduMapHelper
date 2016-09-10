@@ -9,19 +9,17 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.github.yusongliang.baidumaphelper.R;
-import com.github.yusongliang.baidumaphelper.view.MapActivity;
-import com.github.yusongliang.baidumaphelper.view.MapFragmentActivity;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.github.yusongliang.baidumaphelper.activity.MapActivity;
+import com.github.yusongliang.baidumaphelper.activity.MapFragmentActivity;
+import com.github.yusongliang.baidumaphelper.activity.PagerMapFragmentActivity;
 
 /**
- * 功能列表适配器
+ * 功能列表Adapter
  */
 public class FunctionListAdapter extends RecyclerView.Adapter<FunctionListAdapter.ViewHolder> {
 
     private final Context mContext;
-    private final String[] mNames = {"BaseMapActivity演示", "BaseMapFragment演示"};
+    private final String[] mNames = {"BaseMapActivity演示", "BaseMapFragment演示-Viewpager","BaseMapFragment演示-一般"};
 
     public FunctionListAdapter(Context context) {
         mContext = context;
@@ -45,7 +43,10 @@ public class FunctionListAdapter extends RecyclerView.Adapter<FunctionListAdapte
                         c = MapActivity.class;
                         break;
                     case 1:
-                        c = MapFragmentActivity.class;
+                        c = PagerMapFragmentActivity.class;
+                        break;
+                    case 2:
+                        c= MapFragmentActivity.class;
                         break;
                 }
                 mContext.startActivity(new Intent(mContext, c));
