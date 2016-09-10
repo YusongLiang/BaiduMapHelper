@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
     private void initAdapter() {
         LinearLayoutManager manager = new LinearLayoutManager(this);
         mRvFunction.setLayoutManager(manager);
-        FunctionListAdapter adapter = new FunctionListAdapter();
+        FunctionListAdapter adapter = new FunctionListAdapter(this);
         mRvFunction.setAdapter(adapter);
     }
 

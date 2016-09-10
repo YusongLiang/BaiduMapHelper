@@ -1,12 +1,17 @@
 package com.github.yusongliang.library.utils;
 
 import android.content.Context;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
+import com.baidu.mapapi.map.BaiduMap;
+import com.baidu.mapapi.map.BitmapDescriptor;
+import com.baidu.mapapi.map.MyLocationConfiguration;
+import com.baidu.mapapi.map.MyLocationData;
 import com.github.yusongliang.library.BuildConfig;
 import com.github.yusongliang.library.config.TagConfig;
 
@@ -20,13 +25,16 @@ public class Locator {
      */
     private static final int DEFAULT_LOCATE_SPAN = 1000;
     private static Context mContext;
+    private static BaiduMap mBaiduMap;
     private LocationClient mLocationClient;
     private boolean isFirst = true;
     private static Locator mLocator;
     private static OnLocatedListener mOnLocatedListener;
+    private BitmapDescriptor mMyLocBmpDescriptor;
 
     private Locator() {
     }
+
 
     /**
      * 获取定位器实例
@@ -35,18 +43,32 @@ public class Locator {
      * @return 定位器实例
      */
     public static Locator getInstance(Context context) {
-        return getInstance(context, null);
+        return getInstance(context, null, null);
+    }
+
+    /**
+     * 获取定位器实例
+     *
+     * @param context  传入applicationContext
+     * @param baiduMap BaiduMap对象
+     * @return 定位器实例
+     */
+    public static Locator getInstance(Context context, BaiduMap baiduMap) {
+        return getInstance(context, baiduMap, null);
     }
 
     /**
      * 获取定位器实例
      *
      * @param context           传入applicationContext
+     * @param baiduMap          BaiduMap对象
      * @param onLocatedListener 定位监听器
      * @return 定位器实例
      */
-    public static Locator getInstance(Context context, OnLocatedListener onLocatedListener) {
+    public static Locator getInstance(Context context, BaiduMap baiduMap, OnLocatedListener onLocatedListener) {
+        Log.d(TagConfig.LOG_TAG, "创建定位器实例");
         mContext = context;
+        mBaiduMap = baiduMap;
         mOnLocatedListener = onLocatedListener;
         if (mLocator == null) mLocator = new Locator();
         return mLocator;
@@ -93,6 +115,14 @@ public class Locator {
         @Override
         public void onReceiveLocation(BDLocation bdLocation) {
             if (BuildConfig.DEBUG) Log.d(TagConfig.LOG_TAG, "获取到位置");
+            if (mBaiduMap != null) {
+                MyLocationData data = new MyLocationData.Builder()//
+                        .accuracy(bdLocation.getRadius())//
+                        .latitude(bdLocation.getLatitude())//
+                        .longitude(bdLocation.getLongitude())//
+                        .build();
+                mBaiduMap.setMyLocationData(data);
+            }
             mOnLocatedListener.onLocated(bdLocation);
             if (isFirst) {
                 isFirst = false;
@@ -105,6 +135,10 @@ public class Locator {
      * 开启定位
      */
     public void start() {
+        if (mBaiduMap != null) {
+            mBaiduMap.setMyLocationEnabled(true);
+            setLocateData();
+        }
         if (mLocationClient == null) initLocation();
         if (!mLocationClient.isStarted()) {
             Log.d(TagConfig.LOG_TAG, "开启定位");
@@ -121,6 +155,24 @@ public class Locator {
             mLocationClient.stop();
             isFirst = true;
         }
+    }
+
+    /**
+     * 设置我的位置图标
+     *
+     * @param myLocBmpDescriptor 设置我的位置图标,为null的话显示默认图标
+     */
+    public void setMyLocBmpDescriptor(@Nullable BitmapDescriptor myLocBmpDescriptor) {
+        mMyLocBmpDescriptor = myLocBmpDescriptor;
+    }
+
+    /**
+     * 设置定位数据
+     */
+    protected void setLocateData() {
+        mBaiduMap.setMyLocationConfigeration(new MyLocationConfiguration(
+                MyLocationConfiguration.LocationMode.NORMAL, true, mMyLocBmpDescriptor
+        ));
     }
 
     /**
@@ -141,6 +193,5 @@ public class Locator {
          */
         protected void onLocated(BDLocation bdLocation) {
         }
-
     }
 }

@@ -35,6 +35,11 @@ public abstract class BaseMapFragment extends Fragment implements BaiduMap.OnMap
         return mView;
     }
 
+    /**
+     * 获取布局文件id
+     *
+     * @return 布局文件id
+     */
     protected abstract int getContentViewResId();
 
     /**
@@ -66,27 +71,23 @@ public abstract class BaseMapFragment extends Fragment implements BaiduMap.OnMap
         initMapState();
     }
 
-
-    protected void initMapUi(UiSettings uiSettings) {
-        mBaiduMap.setMaxAndMinZoomLevel(MAP_MAX_ZOOM, MAP_MIN_ZOOM);//设置最大、最小缩放
-        mBaiduMap.setMapType(BaiduMap.MAP_TYPE_NORMAL);//基本地图
-        mBaiduMap.setMyLocationEnabled(true);
-        setLocateData();
-    }
-
     /**
-     * 设置我的位置图标
+     * 设置地图ui
      *
-     * @param myLocBmpDescriptor 设置我的位置图标,为null的话显示默认图标
+     * @param uiSettings 用于设置ui的UiSettings对象
      */
-    public void setMyLocBmpDescriptor(@Nullable BitmapDescriptor myLocBmpDescriptor) {
-        mMyLocBmpDescriptor = myLocBmpDescriptor;
+    protected void initMapUi(UiSettings uiSettings) {
+        uiSettings.setOverlookingGesturesEnabled(false);//俯瞰手势关闭
+        uiSettings.setRotateGesturesEnabled(false);//旋转手势关闭
+        uiSettings.setCompassEnabled(false);//指南针关闭
+        uiSettings.setScrollGesturesEnabled(true);//滑动手势开启
+        uiSettings.setZoomGesturesEnabled(true);//缩放手势开启
     }
 
     /**
      * 设置定位数据
      */
-    private void setLocateData() {
+    protected void setLocateData() {
         mBaiduMap.setMyLocationConfigeration(new MyLocationConfiguration(
                 MyLocationConfiguration.LocationMode.NORMAL, true, mMyLocBmpDescriptor
         ));
@@ -109,6 +110,15 @@ public abstract class BaseMapFragment extends Fragment implements BaiduMap.OnMap
      */
     protected abstract TextureMapView initMapView(View v);
 
+    /**
+     * 设置我的位置图标
+     *
+     * @param myLocBmpDescriptor 设置我的位置图标,为null的话显示默认图标
+     */
+    public void setMyLocBmpDescriptor(@Nullable BitmapDescriptor myLocBmpDescriptor) {
+        mMyLocBmpDescriptor = myLocBmpDescriptor;
+    }
+
     protected void initData() {
     }
 
@@ -117,6 +127,10 @@ public abstract class BaseMapFragment extends Fragment implements BaiduMap.OnMap
         mBaiduMap.setOnMapClickListener(this);
         mBaiduMap.setOnMarkerClickListener(this);
         mBaiduMap.setOnMyLocationClickListener(this);
+    }
+
+    public BaiduMap getBaiduMap() {
+        return mBaiduMap;
     }
 
     @Override
@@ -140,5 +154,23 @@ public abstract class BaseMapFragment extends Fragment implements BaiduMap.OnMap
     @Override
     public boolean onMyLocationClick() {
         return false;
+    }
+
+    @Override
+    public void onResume() {
+        mTextureMapView.onResume();
+        super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        mTextureMapView.onPause();
+        super.onPause();
+    }
+
+    @Override
+    public void onDestroy() {
+        mTextureMapView.onDestroy();
+        super.onDestroy();
     }
 }
