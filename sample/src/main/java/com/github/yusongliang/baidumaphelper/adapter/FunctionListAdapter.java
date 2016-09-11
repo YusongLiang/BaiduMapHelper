@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.github.yusongliang.baidumaphelper.R;
+import com.github.yusongliang.baidumaphelper.activity.LocateActivity;
 import com.github.yusongliang.baidumaphelper.activity.MapActivity;
 import com.github.yusongliang.baidumaphelper.activity.MapFragmentActivity;
 import com.github.yusongliang.baidumaphelper.activity.PagerMapFragmentActivity;
@@ -19,7 +20,7 @@ import com.github.yusongliang.baidumaphelper.activity.PagerMapFragmentActivity;
 public class FunctionListAdapter extends RecyclerView.Adapter<FunctionListAdapter.ViewHolder> {
 
     private final Context mContext;
-    private final String[] mNames = {"BaseMapActivity演示", "BaseMapFragment演示-Viewpager","BaseMapFragment演示-一般"};
+    private final String[] mNames = {"Locator定位器演示", "BaseMapActivity演示", "BaseMapFragment演示 - 一般", "BaseMapFragment演示 - Viewpager"};
 
     public FunctionListAdapter(Context context) {
         mContext = context;
@@ -40,13 +41,16 @@ public class FunctionListAdapter extends RecyclerView.Adapter<FunctionListAdapte
                 Class c = null;
                 switch (holder.getAdapterPosition()) {
                     case 0:
-                        c = MapActivity.class;
+                        c = LocateActivity.class;
                         break;
                     case 1:
-                        c = PagerMapFragmentActivity.class;
+                        c = MapActivity.class;
                         break;
                     case 2:
-                        c= MapFragmentActivity.class;
+                        c = MapFragmentActivity.class;
+                        break;
+                    case 3:
+                        c = PagerMapFragmentActivity.class;
                         break;
                 }
                 mContext.startActivity(new Intent(mContext, c));

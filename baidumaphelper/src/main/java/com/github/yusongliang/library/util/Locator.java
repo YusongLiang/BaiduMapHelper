@@ -1,4 +1,4 @@
-package com.github.yusongliang.library.utils;
+package com.github.yusongliang.library.util;
 
 import android.content.Context;
 import android.support.annotation.Nullable;
@@ -66,7 +66,7 @@ public class Locator {
      * @return 定位器实例
      */
     public static Locator getInstance(Context context, BaiduMap baiduMap, OnLocatedListener onLocatedListener) {
-        Log.d(TagConfig.LOG_TAG, "创建定位器实例");
+        Log.d(TagConfig.BASE_LOG_TAG, "创建定位器实例");
         mContext = context;
         mBaiduMap = baiduMap;
         mOnLocatedListener = onLocatedListener;
@@ -114,7 +114,7 @@ public class Locator {
     private class MyLocationListener implements BDLocationListener {
         @Override
         public void onReceiveLocation(BDLocation bdLocation) {
-            if (BuildConfig.DEBUG) Log.d(TagConfig.LOG_TAG, "获取到位置");
+            if (BuildConfig.DEBUG) Log.d(TagConfig.BASE_LOG_TAG, "获取到位置");
             if (mBaiduMap != null) {
                 MyLocationData data = new MyLocationData.Builder()//
                         .accuracy(bdLocation.getRadius())//
@@ -141,7 +141,7 @@ public class Locator {
         }
         if (mLocationClient == null) initLocation();
         if (!mLocationClient.isStarted()) {
-            Log.d(TagConfig.LOG_TAG, "开启定位");
+            Log.d(TagConfig.BASE_LOG_TAG, "开启定位");
             mLocationClient.start();
         }
     }
@@ -150,7 +150,7 @@ public class Locator {
      * 终止定位
      */
     public void stop() {
-        Log.d(TagConfig.LOG_TAG, "终止定位");
+        Log.d(TagConfig.BASE_LOG_TAG, "终止定位");
         if (mLocationClient != null && mLocationClient.isStarted()) {
             mLocationClient.stop();
             isFirst = true;

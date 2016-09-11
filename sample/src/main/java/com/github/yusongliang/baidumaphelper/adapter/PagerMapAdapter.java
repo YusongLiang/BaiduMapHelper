@@ -10,10 +10,10 @@ import java.util.Locale;
 /**
  * 用于演示Viewpager加载MapFragment的FragmentPagerAdapter
  */
-public class MapPagerAdapter extends FragmentPagerAdapter {
+public class PagerMapAdapter extends FragmentPagerAdapter {
     List<Fragment> mFragments;
 
-    public MapPagerAdapter(FragmentManager fm, List<Fragment> fragments) {
+    public PagerMapAdapter(FragmentManager fm, List<Fragment> fragments) {
         super(fm);
         mFragments = fragments;
     }

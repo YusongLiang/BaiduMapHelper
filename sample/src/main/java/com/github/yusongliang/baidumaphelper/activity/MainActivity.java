@@ -8,6 +8,9 @@ import android.support.v7.widget.RecyclerView;
 import com.github.yusongliang.baidumaphelper.R;
 import com.github.yusongliang.baidumaphelper.adapter.FunctionListAdapter;
 
+/**
+ * 主页面
+ */
 public class MainActivity extends AppCompatActivity {
 
     /**

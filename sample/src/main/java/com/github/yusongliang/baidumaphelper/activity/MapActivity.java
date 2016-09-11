@@ -7,7 +7,7 @@ import com.baidu.mapapi.model.LatLng;
 import com.github.yusongliang.baidumaphelper.R;
 import com.github.yusongliang.baidumaphelper.app.SampleApplication;
 import com.github.yusongliang.library.app.BaseMapActivity;
-import com.github.yusongliang.library.utils.Locator;
+import com.github.yusongliang.library.util.Locator;
 
 /**
  * 基础地图功能页面

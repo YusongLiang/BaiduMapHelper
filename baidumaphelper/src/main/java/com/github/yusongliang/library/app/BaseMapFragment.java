@@ -8,10 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.baidu.mapapi.map.BaiduMap;
-import com.baidu.mapapi.map.BitmapDescriptor;
 import com.baidu.mapapi.map.MapPoi;
 import com.baidu.mapapi.map.Marker;
-import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.TextureMapView;
 import com.baidu.mapapi.map.UiSettings;
 import com.baidu.mapapi.model.LatLng;
@@ -25,7 +23,6 @@ public abstract class BaseMapFragment extends Fragment implements BaiduMap.OnMap
     protected View mView;
     private TextureMapView mTextureMapView;
     private BaiduMap mBaiduMap;
-    private BitmapDescriptor mMyLocBmpDescriptor;
 
     @Nullable
     @Override
@@ -85,39 +82,20 @@ public abstract class BaseMapFragment extends Fragment implements BaiduMap.OnMap
     }
 
     /**
-     * 设置定位数据
-     */
-    protected void setLocateData() {
-        mBaiduMap.setMyLocationConfigeration(new MyLocationConfiguration(
-                MyLocationConfiguration.LocationMode.NORMAL, true, mMyLocBmpDescriptor
-        ));
-    }
-
-    /**
      * 设置地图其他状态
      */
     protected void initMapState() {
         mBaiduMap.setMaxAndMinZoomLevel(MAP_MAX_ZOOM, MAP_MIN_ZOOM);//设置最大、最小缩放
         mBaiduMap.setMapType(BaiduMap.MAP_TYPE_NORMAL);//基本地图
-        mBaiduMap.setMyLocationEnabled(true);
-        setLocateData();
     }
 
     /**
      * 获取布局文件id
      *
+     * @param v 页面的View对象
      * @return 布局文件id
      */
     protected abstract TextureMapView initMapView(View v);
-
-    /**
-     * 设置我的位置图标
-     *
-     * @param myLocBmpDescriptor 设置我的位置图标,为null的话显示默认图标
-     */
-    public void setMyLocBmpDescriptor(@Nullable BitmapDescriptor myLocBmpDescriptor) {
-        mMyLocBmpDescriptor = myLocBmpDescriptor;
-    }
 
     protected void initData() {
     }

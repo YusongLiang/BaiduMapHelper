@@ -16,17 +16,17 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * 演示一般嵌套地图Fragment的Activity
+ * 演示一般嵌套地图Fragment的页面
  */
 public class MapFragmentActivity extends AppCompatActivity {
     private TabLayout mTabLayout;
-    private FragmentManager mManager;
     private TabLayout.OnTabSelectedListener onTabSelectedListener = new TabLayout.OnTabSelectedListener() {
 
         @Override
         public void onTabSelected(TabLayout.Tab tab) {
-            FragmentTransaction transaction = mManager.beginTransaction();
-            List<Fragment> fragments = mManager.getFragments();
+            FragmentManager manager = getSupportFragmentManager();
+            FragmentTransaction transaction = manager.beginTransaction();
+            List<Fragment> fragments = manager.getFragments();
             if (fragments != null) {
                 for (Fragment fragment : fragments) {
                     transaction.hide(fragment);
@@ -62,28 +62,30 @@ public class MapFragmentActivity extends AppCompatActivity {
         setSelectedTab();
     }
 
-    private void setSelectedTab() {
-        TabLayout.Tab tab = mTabLayout.getTabAt(0);
-        if (tab != null) {
-            tab.select();
-            onTabSelectedListener.onTabSelected(tab);
-        }
-    }
-
     private void initView() {
         mTabLayout = (TabLayout) findViewById(R.id.tab_layout);
     }
 
     private void initData() {
-        mManager = getSupportFragmentManager();
         for (int i = 1; i <= 3; i++) {
-            String tag = String.format(Locale.CHINA, "第%d个", i);
-            TabLayout.Tab tab = mTabLayout.newTab().setText(tag);
+            String tabName = String.format(Locale.CHINA, "第%d个", i);
+            TabLayout.Tab tab = mTabLayout.newTab().setText(tabName);
             mTabLayout.addTab(tab);
         }
     }
 
     private void initListener() {
         mTabLayout.addOnTabSelectedListener(onTabSelectedListener);
+    }
+
+    /**
+     * 设置选中的tab
+     */
+    private void setSelectedTab() {
+        TabLayout.Tab tab = mTabLayout.getTabAt(0);
+        if (tab != null) {
+            tab.select();//该方法不会触发onTabSelected(),因此需要手动调用
+            onTabSelectedListener.onTabSelected(tab);
+        }
     }
 }
