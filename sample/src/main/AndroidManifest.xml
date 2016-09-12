@@ -37,12 +37,9 @@
         android:theme="@style/AppTheme">
 
         <!--此处需替换为自己的申请的Key值-->
-        <!--<meta-data
-            android:name="com.baidu.lbsapi.API_KEY"
-            android:value="dclg9zIaveuFl1EHWsrA5sV41yefSPbB" />-->
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="yaa3MjGCWNWoPmxqE7myF2ja7uLqAopR" />
+            android:value="@string/baidu_map_key_lys_company_debug" />
 
         <!--百度地图定位服务-->
         <service

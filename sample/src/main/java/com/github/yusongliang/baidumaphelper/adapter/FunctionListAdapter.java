@@ -20,7 +20,8 @@ import com.github.yusongliang.baidumaphelper.activity.PagerMapFragmentActivity;
 public class FunctionListAdapter extends RecyclerView.Adapter<FunctionListAdapter.ViewHolder> {
 
     private final Context mContext;
-    private final String[] mNames = {"Locator定位器演示", "BaseMapActivity演示", "BaseMapFragment演示 - 一般", "BaseMapFragment演示 - Viewpager"};
+    private final String[] mNames = {"Locator定位器演示",
+            "BaseMapActivity演示", "BaseMapFragment演示 - 一般", "BaseMapFragment演示 - Viewpager"};
 
     public FunctionListAdapter(Context context) {
         mContext = context;

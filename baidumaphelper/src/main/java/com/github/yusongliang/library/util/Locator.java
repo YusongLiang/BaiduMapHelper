@@ -71,6 +71,7 @@ public class Locator {
         mBaiduMap = baiduMap;
         mOnLocatedListener = onLocatedListener;
         if (mLocator == null) mLocator = new Locator();
+        else mLocator.stop();
         return mLocator;
     }
 
@@ -141,7 +142,7 @@ public class Locator {
         }
         if (mLocationClient == null) initLocation();
         if (!mLocationClient.isStarted()) {
-            Log.d(TagConfig.BASE_LOG_TAG, "开启定位");
+            Log.d(TagConfig.LOG_TAG_LOCATE, "开启定位");
             mLocationClient.start();
         }
     }
@@ -150,9 +151,10 @@ public class Locator {
      * 终止定位
      */
     public void stop() {
-        Log.d(TagConfig.BASE_LOG_TAG, "终止定位");
+        Log.d(TagConfig.LOG_TAG_LOCATE, "终止定位");
         if (mLocationClient != null && mLocationClient.isStarted()) {
             mLocationClient.stop();
+            mLocationClient = null;
             isFirst = true;
         }
     }
