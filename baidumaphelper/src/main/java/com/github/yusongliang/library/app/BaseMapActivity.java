@@ -14,6 +14,8 @@ import com.baidu.mapapi.model.LatLng;
 
 /**
  * 基础定位Activity
+ *
+ * @author Yusong.Liang
  */
 public abstract class BaseMapActivity extends AppCompatActivity implements BaiduMap.OnMapLoadedCallback, BaiduMap.OnMarkerClickListener, BaiduMap.OnMapClickListener, BaiduMap.OnMyLocationClickListener {
     private static final float MAP_MAX_ZOOM = 21.0f;

@@ -10,6 +10,8 @@ import com.baidu.mapapi.model.LatLng;
 
 /**
  * 波浪动画
+ *
+ * @author Yusong.Liang
  */
 public class WaveAnimation {
     private static final int DEFAULT_FILL_COLOR = 0x2200A3F7;

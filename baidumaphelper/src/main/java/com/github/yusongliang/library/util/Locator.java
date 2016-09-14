@@ -1,11 +1,7 @@
 package com.github.yusongliang.library.util;
 
-import android.Manifest;
 import android.content.Context;
-import android.content.pm.PackageManager;
-import android.os.Build;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 
 import com.baidu.location.BDLocation;
@@ -19,10 +15,10 @@ import com.baidu.mapapi.map.MyLocationData;
 import com.github.yusongliang.library.BuildConfig;
 import com.github.yusongliang.library.config.TagConfig;
 
-import java.security.acl.Permission;
-
 /**
  * 定位器
+ *
+ * @author Yusong.Liang
  */
 public class Locator {
 

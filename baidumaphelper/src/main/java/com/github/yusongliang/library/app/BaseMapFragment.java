@@ -16,6 +16,8 @@ import com.baidu.mapapi.model.LatLng;
 
 /**
  * 基础定位Fragment
+ *
+ * @author Yusong.Liang
  */
 public abstract class BaseMapFragment extends Fragment implements BaiduMap.OnMapLoadedCallback, BaiduMap.OnMapClickListener, BaiduMap.OnMarkerClickListener, BaiduMap.OnMyLocationClickListener {
     private static final float MAP_MAX_ZOOM = 21.0f;
