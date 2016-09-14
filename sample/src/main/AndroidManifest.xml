@@ -49,7 +49,6 @@
 
         <activity
             android:name=".activity.MainActivity"
-            android:label="@string/main_label"
             android:theme="@style/AppTheme.DarkActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -61,6 +60,7 @@
         <activity android:name=".activity.PagerMapFragmentActivity" />
         <activity android:name=".activity.MapFragmentActivity" />
         <activity android:name=".activity.LocateActivity" />
+        <activity android:name=".activity.WaveAnimationActivity" />
     </application>
 
 </manifest>

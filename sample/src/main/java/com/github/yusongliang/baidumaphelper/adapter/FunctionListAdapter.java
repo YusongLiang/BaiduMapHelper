@@ -13,6 +13,7 @@ import com.github.yusongliang.baidumaphelper.activity.LocateActivity;
 import com.github.yusongliang.baidumaphelper.activity.MapActivity;
 import com.github.yusongliang.baidumaphelper.activity.MapFragmentActivity;
 import com.github.yusongliang.baidumaphelper.activity.PagerMapFragmentActivity;
+import com.github.yusongliang.baidumaphelper.activity.WaveAnimationActivity;
 
 /**
  * 功能列表Adapter
@@ -21,7 +22,8 @@ public class FunctionListAdapter extends RecyclerView.Adapter<FunctionListAdapte
 
     private final Context mContext;
     private final String[] mNames = {"Locator定位器演示",
-            "BaseMapActivity演示", "BaseMapFragment演示 - 一般", "BaseMapFragment演示 - Viewpager"};
+            "BaseMapActivity演示", "BaseMapFragment演示 - 一般", "BaseMapFragment演示 - Viewpager",
+            "WaveAnimation波浪动画演示"};
 
     public FunctionListAdapter(Context context) {
         mContext = context;
@@ -52,6 +54,9 @@ public class FunctionListAdapter extends RecyclerView.Adapter<FunctionListAdapte
                         break;
                     case 3:
                         c = PagerMapFragmentActivity.class;
+                        break;
+                    case 4:
+                        c = WaveAnimationActivity.class;
                         break;
                 }
                 mContext.startActivity(new Intent(mContext, c));

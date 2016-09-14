@@ -1,6 +1,5 @@
 <resources>
-    <string name="baidu_map_key_lys_home_debug">yaa3MjGCWNWoPmxqE7myF2ja7uLqAopR</string>
-    <string name="baidu_map_key_lys_company_debug">dclg9zIaveuFl1EHWsrA5sV41yefSPbB</string>
+    <string name="baidu_map_key_lys_company_debug">yaa3MjGCWNWoPmxqE7myF2ja7uLqAopR</string>
     <string name="app_name">BaiduMapHelper</string>
     <string name="main_label">功能演示列表</string>
     <string name="locate">获取当前位置</string>
