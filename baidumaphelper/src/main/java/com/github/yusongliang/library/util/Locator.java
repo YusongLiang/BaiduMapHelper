@@ -185,7 +185,7 @@ public class Locator {
     public static abstract class OnLocatedListener {
 
         /**
-         * 地图界面出现后，初次定位时执行的操作
+         * 初次定位时执行的操作
          */
         protected void onFirstLocate(BDLocation bdLocation) {
         }

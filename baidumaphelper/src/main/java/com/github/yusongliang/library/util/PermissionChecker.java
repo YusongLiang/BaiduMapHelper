@@ -9,14 +9,14 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 
 /**
- * 权限检查器
+ * 权限检查器，针对安卓6.0以上检查相关权限问题
  *
  * @author Yusong.Liang
  */
 public class PermissionChecker {
 
     /**
-     * 针对安卓6.0以上检查相关权限问题，若当前所在页面为Activity则使用该方法,若当前页面为Fragment，
+     * 检查相关权限，若当前所在页面为Activity则使用该方法,若当前页面为Fragment，
      * 则使用{@link #checkFragmentPermission(Fragment, String, int, RequestCallback)}
      *
      * @param context     传入当前Activity对象
@@ -29,7 +29,7 @@ public class PermissionChecker {
     }
 
     /**
-     * 针对安卓6.0以上检查相关权限问题，若当前所在页面为Fragment则使用该方法,若当前页面为Activity，
+     * 检查相关权限，若当前所在页面为Fragment则使用该方法,若当前页面为Activity，
      * 则使用{@link #checkActivityPermission(Activity, String, int, RequestCallback)}
      *
      * @param fragment    传入当前Fragment对象
