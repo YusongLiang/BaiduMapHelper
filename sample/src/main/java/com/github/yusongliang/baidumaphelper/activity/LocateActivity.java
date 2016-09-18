@@ -1,20 +1,26 @@
 package com.github.yusongliang.baidumaphelper.activity;
 
+import android.Manifest;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.baidu.location.BDLocation;
 import com.github.yusongliang.baidumaphelper.R;
+import com.github.yusongliang.library.app.BaseActivity;
 import com.github.yusongliang.library.util.Locator;
 
 /**
  * 定位演示页面
  */
-public class LocateActivity extends AppCompatActivity implements View.OnClickListener {
+public class LocateActivity extends BaseActivity implements View.OnClickListener {
+    private static final int REQUEST_CODE_LOCATION = 0x00000001;
+    private String[] mPermissions = new String[]{
+            Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION,
+            Manifest.permission.READ_PHONE_STATE, Manifest.permission.WRITE_EXTERNAL_STORAGE
+    };
     private TextView mTvLocateMsg;
     private Button mBtLocate;
     private Locator mLocator;
@@ -57,8 +63,26 @@ public class LocateActivity extends AppCompatActivity implements View.OnClickLis
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.bt_locate:
-                mLocator.start();
+                checkMPermissions(REQUEST_CODE_LOCATION, mPermissions);
                 break;
+        }
+    }
+
+    @Override
+    public void onGranted(int requestCode, String[] permissions) {
+        if (requestCode == REQUEST_CODE_LOCATION) {
+            if (permissions.length == mPermissions.length) {
+                mLocator.start();
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsFail(int requestCode, String[] permissions) {
+        if (requestCode == REQUEST_CODE_LOCATION) {
+            if (permissions.length == 0) {
+                mLocator.start();
+            }
         }
     }
 }

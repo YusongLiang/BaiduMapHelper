@@ -36,4 +36,5 @@ public class MainActivity extends AppCompatActivity {
         FunctionListAdapter adapter = new FunctionListAdapter(this);
         mRvFunction.setAdapter(adapter);
     }
+
 }
