@@ -12,7 +12,6 @@ import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptor;
 import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.MyLocationData;
-import com.github.yusongliang.library.BuildConfig;
 import com.github.yusongliang.library.config.TagConfig;
 
 /**
@@ -68,7 +67,7 @@ public class Locator {
      * @return 定位器实例
      */
     public static Locator getInstance(Context context, BaiduMap baiduMap, OnLocatedListener onLocatedListener) {
-        Log.d(TagConfig.BASE_LOG_TAG, "创建定位器实例");
+        Log.d(TagConfig.LOG_TAG_LOCATE, "创建定位器实例");
         mContext = context;
         mBaiduMap = baiduMap;
         mOnLocatedListener = onLocatedListener;
@@ -90,11 +89,12 @@ public class Locator {
      * 定位当前位置
      */
     private void initLocation() {
+        Log.d(TagConfig.LOG_TAG_LOCATE, "initLocation");
         //声明LocationClient类
         mLocationClient = new LocationClient(mContext);
-        MyLocationListener mLocationListener = new MyLocationListener();
+        MyLocationListener locationListener = new MyLocationListener();
         //注册监听函数
-        mLocationClient.registerLocationListener(mLocationListener);
+        mLocationClient.registerLocationListener(locationListener);
         //配置定位SDK参数
         LocationClientOption option = new LocationClientOption();
         option.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy);//可选，默认高精度，设置定位模式，高精度，低功耗，仅设备
@@ -109,15 +109,17 @@ public class Locator {
         option.SetIgnoreCacheException(false);//可选，默认false，设置是否收集CRASH信息，默认收集
         option.setEnableSimulateGps(false);//可选，默认false，设置是否需要过滤gps仿真结果，默认需要
         mLocationClient.setLocOption(option);
+        Log.d(TagConfig.LOG_TAG_LOCATE, "mLocationClient完成");
     }
 
     /**
      * 处理定位事件的监听器
      */
     private class MyLocationListener implements BDLocationListener {
+
         @Override
         public void onReceiveLocation(BDLocation bdLocation) {
-            if (BuildConfig.DEBUG) Log.d(TagConfig.BASE_LOG_TAG, "获取到位置");
+            Log.d(TagConfig.LOG_TAG_LOCATE, "获取到位置，type:" + bdLocation.getLocType() + ",desc:" + bdLocation.getLocTypeDescription());
             if (mBaiduMap != null) {
                 MyLocationData data = new MyLocationData.Builder()//
                         .accuracy(bdLocation.getRadius())//
