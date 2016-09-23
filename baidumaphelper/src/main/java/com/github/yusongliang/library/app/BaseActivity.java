@@ -8,7 +8,7 @@ import com.github.yusongliang.library.util.MPermissionChecker;
 /**
  * 基础Activity
  */
-public abstract class BaseActivity extends AppCompatActivity implements MPermissionChecker.CheckCallback, MPermissionChecker.ResultCallback {
+public abstract class BaseActivity extends AppCompatActivity implements MPermissionChecker.Callback {
 
     /**
      * 安卓6.0以上检查权限
@@ -21,24 +21,23 @@ public abstract class BaseActivity extends AppCompatActivity implements MPermiss
     }
 
     @Override
-    public void onGranted(int requestCode,String[] permissions) {
+    public void onShouldShowRationale(int requestCode, String[] permissions) {
+
     }
 
     @Override
-    public void onShouldShowRationale(int requestCode,String[] permissions) {
+    public void onRequestPermissionsSuccess(int requestCode, String[] successPermissions) {
+
+    }
+
+    @Override
+    public void onRequestPermissionsFail(int requestCode, String[] failPermissions) {
+
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        MPermissionChecker.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+        MPermissionChecker.onRequestPermissionsResult(requestCode, permissions, grantResults);
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-    }
-
-    @Override
-    public void onRequestPermissionsSuccess(int requestCode, String[] permissions) {
-    }
-
-    @Override
-    public void onRequestPermissionsFail(int requestCode, String[] permissions) {
     }
 }

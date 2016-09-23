@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -19,78 +20,90 @@ import java.util.List;
 public class MPermissionChecker {
 
     /**
-     * 检查相关权限，若当前所在页面为Activity则使用该方法,若当前页面为Fragment，
-     * 则使用{@link #checkFragmentPermissions(Fragment, int, CheckCallback, String...)}
+     * 已授予权限集合
+     */
+    private static List<String> mGrantedList;
+
+    /**
+     * 检查结果的回调，{@link MPermissionChecker.Callback}的实现类对象
+     */
+    private static Callback mCallback;
+
+    /**
+     * 检查相关权限，若当前所在页面为{@link Activity}则使用该方法,若当前页面为{@link Fragment}，
+     * 则使用{@link #checkFragmentPermissions(Fragment, int, Callback, String...)}
      *
-     * @param context     传入当前Activity对象
+     * @param context     传入当前{@link Activity}对象
      * @param requestCode 权限请求码
-     * @param callback    检查结果的回调，需实现{@link CheckCallback}，并重写相关方法
-     * @param permissions 所需权限
+     * @param callback    检查结果的回调，需实现{@link MPermissionChecker.Callback}
+     * @param permissions 需检查的权限
      */
     public static void checkActivityPermissions(@NonNull Activity context, int requestCode,
-                                                @NonNull CheckCallback callback, @NonNull String... permissions) {
+                                                @NonNull Callback callback, @NonNull String... permissions) {
         checkPermissions(context, null, requestCode, callback, permissions);
     }
 
     /**
-     * 检查相关权限，若当前所在页面为Fragment则使用该方法,若当前页面为Activity，
-     * 则使用{@link #checkActivityPermissions(Activity, int, CheckCallback, String...)}
+     * 检查相关权限，若当前所在页面为{@link Fragment}则使用该方法,若当前页面为{@link Activity}，
+     * 则使用{@link #checkActivityPermissions(Activity, int, Callback, String...)}
      *
-     * @param fragment    传入当前Fragment对象
+     * @param fragment    传入当前{@link Fragment}对象
      * @param requestCode 权限请求码
-     * @param callback    检查结果的回调，需实现{@link CheckCallback}，并重写相关方法
-     * @param permissions 所需权限
+     * @param callback    检查结果的回调，需实现{@link MPermissionChecker.Callback}
+     * @param permissions 需检查的权限
      */
     public static void checkFragmentPermissions(@NonNull Fragment fragment, int requestCode,
-                                                @NonNull CheckCallback callback, @NonNull String... permissions) {
+                                                @NonNull Callback callback, @NonNull String... permissions) {
         checkPermissions(null, fragment, requestCode, callback, permissions);
     }
 
     /**
      * 基础检查权限方法
      *
-     * @param context     当前Activity对象
-     * @param fragment    当前Fragment对象
+     * @param context     当前{@link Activity}对象
+     * @param fragment    当前{@link Fragment}对象
      * @param requestCode 权限请求码
-     * @param callback    检查结果的回调，需实现{@link CheckCallback}，并重写相关方法
-     * @param permissions 所需权限
+     * @param callback    检查结果的回调，{@link MPermissionChecker.Callback}的实现类对象
+     * @param permissions 需检查的权限
      */
     private static void checkPermissions(Activity context, Fragment fragment, int requestCode,
-                                         @NonNull CheckCallback callback, @NonNull String... permissions) {
-        List<String> grantedList = new ArrayList<>();
+                                         @NonNull Callback callback, @NonNull String... permissions) {
+        mCallback = callback;
+        mGrantedList = new ArrayList<>();
         List<String> shouldShowRequestList = new ArrayList<>();
         List<String> requestList = new ArrayList<>();
         if (fragment != null) context = fragment.getActivity();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {//版本为安卓6.0以上
             for (String permission : permissions) {
-                if (ContextCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED) {
-                    grantedList.add(permission);
-                } else {
-                    if (ActivityCompat.shouldShowRequestPermissionRationale(context, permission)) {
+                if (ContextCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED) {//当前已被授权
+                    mGrantedList.add(permission);//当前权限添加到已授权集合
+                } else {//当前尚未授权
+                    if (ActivityCompat.shouldShowRequestPermissionRationale(context, permission)) {//曾被拒绝，需要进一步解释该权限
                         shouldShowRequestList.add(permission);
-                    } else {
+                    } else {//权限首次请求
                         requestList.add(permission);
                     }
                 }
             }
-            callback.onGranted(requestCode, grantedList.toArray(new String[grantedList.size()]));
             callback.onShouldShowRationale(requestCode, shouldShowRequestList.toArray(new String[shouldShowRequestList.size()]));
-            if (requestList.size() > 0)
+            if (requestList.size() > 0)//有需要请求的权限
                 requestPermissions(context, fragment, requestCode, requestList);
-        } else {
-            callback.onGranted(requestCode, permissions);
+            else//所有权限均已授权
+                callback.onRequestPermissionsSuccess(requestCode, permissions);
+        } else {//版本为安卓6.0以下
+            callback.onRequestPermissionsSuccess(requestCode, permissions);
         }
     }
 
     /**
-     * 申请权限
+     * 请求权限
      *
-     * @param context     当前Activity对象
-     * @param fragment    当前Fragment对象
+     * @param context     传入的{@link android.content.Context}
+     * @param fragment    传入的{@link Fragment}
      * @param requestCode 权限请求码
-     * @param permissions 所需权限
+     * @param permissions 请求的权限
      */
-    private static void requestPermissions(Activity context, Fragment fragment, int requestCode, @NonNull List<String> permissions) {
+    private static void requestPermissions(Activity context, @Nullable Fragment fragment, int requestCode, @NonNull List<String> permissions) {
         String[] permissionsToRequest = permissions.toArray(new String[permissions.size()]);
         if (fragment != null) {
             fragment.requestPermissions(permissionsToRequest, requestCode);
@@ -100,50 +113,37 @@ public class MPermissionChecker {
     }
 
     /**
-     * 请求结果回调，在Activity的{@link Activity#onRequestPermissionsResult(int, String[], int[])}
-     * 或Fragment的{@link Fragment#onRequestPermissionsResult(int, String[], int[])}中调用
+     * 处理权限请求结果，需在{@link Activity#onRequestPermissionsResult(int, String[], int[])}方法中，
+     * 或{@link Fragment#onRequestPermissionsResult(int, String[], int[])}方法中调用
      *
-     * @param requestCode  请求码
-     * @param permissions  请求权限
-     * @param grantResults 授权结果
-     * @param callback     结果回调
+     * @param requestCode  权限请求码
+     * @param permissions  所请求的权限
+     * @param grantResults 权限的授权结果
      */
-    public static void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, int[] grantResults, ResultCallback callback) {
-        List<String> grantedPermissions = new ArrayList<>();
-        List<String> deniedPermissions = new ArrayList<>();
+    public static void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, int[] grantResults) {
+        List<String> deniedList = new ArrayList<>();
         for (int i = 0; i < grantResults.length; i++) {
             int currResult = grantResults[i];
             String currPermission = permissions[i];
             if (currResult == PackageManager.PERMISSION_GRANTED) {
-                grantedPermissions.add(currPermission);
+                mGrantedList.add(currPermission);
             } else {
-                deniedPermissions.add(currPermission);
+                deniedList.add(currPermission);
             }
         }
-        callback.onRequestPermissionsSuccess(requestCode, grantedPermissions.toArray(new String[grantedPermissions.size()]));
-        callback.onRequestPermissionsFail(requestCode, deniedPermissions.toArray(new String[deniedPermissions.size()]));
-    }
-
-    /**
-     * 权限检查结果的回调
-     */
-    public interface CheckCallback {
-
-        /**
-         * 已被授权
-         */
-        void onGranted(int requestCode, String[] permissions);
-
-        /**
-         * 需要阐述权限用途
-         */
-        void onShouldShowRationale(int requestCode, String[] permissions);
+        mCallback.onRequestPermissionsSuccess(requestCode, mGrantedList.toArray(new String[mGrantedList.size()]));
+        mCallback.onRequestPermissionsFail(requestCode, deniedList.toArray(new String[deniedList.size()]));
     }
 
     /**
      * 权限请求结果的回调
      */
-    public interface ResultCallback {
+    public interface Callback {
+
+        /**
+         * 需要阐述权限用途
+         */
+        void onShouldShowRationale(int requestCode, String[] permissions);
 
         /**
          * 权限请求成功
