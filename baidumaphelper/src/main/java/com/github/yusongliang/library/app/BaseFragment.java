@@ -21,18 +21,11 @@ public abstract class BaseFragment extends Fragment implements MPermissionChecke
     }
 
     @Override
-    public void onShouldShowRationale(int requestCode, String[] permissions) {
-
-    }
-
-    @Override
     public void onRequestPermissionsSuccess(int requestCode, String[] successPermissions) {
-
     }
 
     @Override
     public void onRequestPermissionsFail(int requestCode, String[] failPermissions) {
-
     }
 
     @Override

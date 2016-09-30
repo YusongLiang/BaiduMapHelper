@@ -76,11 +76,6 @@ public class LocateActivity extends BaseActivity implements View.OnClickListener
     }
 
     @Override
-    public void onShouldShowRationale(int requestCode, String[] permissions) {
-        super.onShouldShowRationale(requestCode, permissions);
-    }
-
-    @Override
     protected void onDestroy() {
         mLocator.stop();
         mLocator = null;

@@ -21,18 +21,11 @@ public abstract class BaseActivity extends AppCompatActivity implements MPermiss
     }
 
     @Override
-    public void onShouldShowRationale(int requestCode, String[] permissions) {
-
-    }
-
-    @Override
     public void onRequestPermissionsSuccess(int requestCode, String[] successPermissions) {
-
     }
 
     @Override
     public void onRequestPermissionsFail(int requestCode, String[] failPermissions) {
-
     }
 
     @Override

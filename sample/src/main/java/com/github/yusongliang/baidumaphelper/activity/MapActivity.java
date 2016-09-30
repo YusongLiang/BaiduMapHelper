@@ -30,11 +30,6 @@ public class MapActivity extends BaseMapActivity {
     }
 
     @Override
-    protected void initListener() {
-        super.initListener();
-    }
-
-    @Override
     protected void initMapState() {
         super.initMapState();
         mLocator = Locator.getInstance(SampleApplication.getContext(), getBaiduMap(), new Locator.OnLocatedListener() {

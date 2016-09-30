@@ -28,6 +28,7 @@ public class MPermissionChecker {
      * 检查结果的回调，{@link MPermissionChecker.Callback}的实现类对象
      */
     private static Callback mCallback;
+    private static List<String> mDeniedList;
 
     /**
      * 检查相关权限，若当前所在页面为{@link Activity}则使用该方法,若当前页面为{@link Fragment}，
@@ -70,7 +71,7 @@ public class MPermissionChecker {
                                          @NonNull Callback callback, @NonNull String... permissions) {
         mCallback = callback;
         mGrantedList = new ArrayList<>();
-        List<String> shouldShowRequestList = new ArrayList<>();
+        mDeniedList = new ArrayList<>();
         List<String> requestList = new ArrayList<>();
         if (fragment != null) context = fragment.getActivity();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {//版本为安卓6.0以上
@@ -79,19 +80,24 @@ public class MPermissionChecker {
                     mGrantedList.add(permission);//当前权限添加到已授权集合
                 } else {//当前尚未授权
                     if (ActivityCompat.shouldShowRequestPermissionRationale(context, permission)) {//曾被拒绝，需要进一步解释该权限
-                        shouldShowRequestList.add(permission);
+                        mDeniedList.add(permission);
                     } else {//权限首次请求
                         requestList.add(permission);
                     }
                 }
             }
-            callback.onShouldShowRationale(requestCode, shouldShowRequestList.toArray(new String[shouldShowRequestList.size()]));
-            if (requestList.size() > 0)//有需要请求的权限
+            if (requestList.size() > 0) {//有需要请求的权限
                 requestPermissions(context, fragment, requestCode, requestList);
-            else//所有权限均已授权
-                callback.onRequestPermissionsSuccess(requestCode, permissions);
+            } else {
+                if (mGrantedList.size() > 0) {
+                    mCallback.onRequestPermissionsSuccess(requestCode, mGrantedList.toArray(new String[mGrantedList.size()]));
+                }
+                if (mDeniedList.size() > 0) {
+                    mCallback.onRequestPermissionsFail(requestCode, mDeniedList.toArray(new String[mDeniedList.size()]));
+                }
+            }
         } else {//版本为安卓6.0以下
-            callback.onRequestPermissionsSuccess(requestCode, permissions);
+            mCallback.onRequestPermissionsSuccess(requestCode, permissions);
         }
     }
 
@@ -121,29 +127,27 @@ public class MPermissionChecker {
      * @param grantResults 权限的授权结果
      */
     public static void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, int[] grantResults) {
-        List<String> deniedList = new ArrayList<>();
         for (int i = 0; i < grantResults.length; i++) {
             int currResult = grantResults[i];
             String currPermission = permissions[i];
             if (currResult == PackageManager.PERMISSION_GRANTED) {
                 mGrantedList.add(currPermission);
             } else {
-                deniedList.add(currPermission);
+                mDeniedList.add(currPermission);
             }
         }
-        mCallback.onRequestPermissionsSuccess(requestCode, mGrantedList.toArray(new String[mGrantedList.size()]));
-        mCallback.onRequestPermissionsFail(requestCode, deniedList.toArray(new String[deniedList.size()]));
+        if (mGrantedList.size() > 0) {
+            mCallback.onRequestPermissionsSuccess(requestCode, mGrantedList.toArray(new String[mGrantedList.size()]));
+        }
+        if (mDeniedList.size() > 0) {
+            mCallback.onRequestPermissionsFail(requestCode, mDeniedList.toArray(new String[mDeniedList.size()]));
+        }
     }
 
     /**
      * 权限请求结果的回调
      */
     public interface Callback {
-
-        /**
-         * 需要阐述权限用途
-         */
-        void onShouldShowRationale(int requestCode, String[] permissions);
 
         /**
          * 权限请求成功
