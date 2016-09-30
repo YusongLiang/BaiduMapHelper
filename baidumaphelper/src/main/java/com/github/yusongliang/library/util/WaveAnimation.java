@@ -14,30 +14,107 @@ import com.baidu.mapapi.model.LatLng;
  * @author Yusong.Liang
  */
 public class WaveAnimation {
+
+    /**
+     * 波浪默认的填充颜色
+     */
     private static final int DEFAULT_FILL_COLOR = 0x2200A3F7;
+
+    /**
+     * 波浪默认的边框颜色
+     */
     private static final int DEFAULT_STROKE_COLOR = 0x880B67EB;
+
+    /**
+     * 波浪默认的最大半径
+     */
     private static final int DEFAULT_RADIUS = 1000;
+
+    /**
+     * 默认的重复次数
+     */
     private static final int DEFAULT_REPEATED_TIME = 10;
+
+    /**
+     * 波浪最大半径
+     */
     private int mMaxRadius;
+
+    /**
+     * {@link BaiduMap}对象
+     */
     private BaiduMap mBaiduMap;
+
+    /**
+     * 波浪所在{@link Activity}
+     */
     private Activity mActivity;
+
+    /**
+     * 中心位置{@link LatLng}对象
+     */
     private LatLng mCenter;
+
+    /**
+     * 波浪填充颜色
+     */
     private int mFillColor = -1;
+
+    /**
+     * 更新波浪的{@link UpdateCircleThread}线程对象
+     */
     private UpdateCircleThread mThread;
+
+    /**
+     * 波浪边框颜色
+     */
     private int mStrokeColor = -1;
+
+    /**
+     * 波浪边框宽度(单位:px)
+     */
     private int mStrokeWidth = 1;
+
+    /**
+     * 波浪的{@link Overlay}对象
+     */
     private Overlay mCircleOverlay;
+
+    /**
+     * 波浪重复次数
+     */
     private int mRepeatedTime;
+
+    /**
+     * 是不停的
+     */
     private boolean mIsContinual = true;
 
+    /**
+     * @param context  当前页面的{@link Activity}
+     * @param baiduMap {@link BaiduMap}对象
+     * @param center   中心位置的{@link LatLng}对象
+     */
     public WaveAnimation(Activity context, BaiduMap baiduMap, LatLng center) {
         this(context, baiduMap, center, DEFAULT_RADIUS);
     }
 
+    /**
+     * @param context  当前页面的{@link Activity}
+     * @param baiduMap {@link BaiduMap}对象
+     * @param cLat     中心位置的纬度
+     * @param cLng     中心位置的经度
+     */
     public WaveAnimation(Activity context, BaiduMap baiduMap, float cLat, float cLng) {
         this(context, baiduMap, cLat, cLng, DEFAULT_RADIUS);
     }
 
+    /**
+     * @param context  当前页面的{@link Activity}
+     * @param baiduMap {@link BaiduMap}对象
+     * @param center   中心位置的{@link LatLng}对象
+     * @param radius   波浪的最大半径(单位:米)
+     */
     public WaveAnimation(Activity context, BaiduMap baiduMap, LatLng center, int radius) {
         mActivity = context;
         mBaiduMap = baiduMap;
@@ -45,6 +122,13 @@ public class WaveAnimation {
         mMaxRadius = radius;
     }
 
+    /**
+     * @param context  当前页面的{@link Activity}
+     * @param baiduMap {@link BaiduMap}对象
+     * @param cLat     中心位置的纬度
+     * @param cLng     中心位置的经度
+     * @param radius   波浪的最大半径(单位:米)
+     */
     public WaveAnimation(Activity context, BaiduMap baiduMap, float cLat, float cLng, int radius) {
         mActivity = context;
         mBaiduMap = baiduMap;
@@ -138,7 +222,7 @@ public class WaveAnimation {
     }
 
     /**
-     * 更新圆圈半径
+     * 更新圆圈半径的线程
      */
     private class UpdateCircleThread extends Thread {
         private int mRadius;

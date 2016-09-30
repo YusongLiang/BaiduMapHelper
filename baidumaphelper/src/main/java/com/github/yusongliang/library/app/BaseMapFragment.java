@@ -113,6 +113,9 @@ public abstract class BaseMapFragment extends BaseFragment implements BaiduMap.O
         return mBaiduMap;
     }
 
+    protected void initLocate() {
+    }
+
     @Override
     public void onMapLoaded() {
     }
@@ -140,6 +143,7 @@ public abstract class BaseMapFragment extends BaseFragment implements BaiduMap.O
     public void onResume() {
         mTextureMapView.onResume();
         super.onResume();
+        initLocate();
     }
 
     @Override

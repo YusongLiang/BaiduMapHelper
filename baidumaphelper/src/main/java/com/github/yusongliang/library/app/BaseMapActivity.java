@@ -95,6 +95,13 @@ public abstract class BaseMapActivity extends BaseActivity implements BaiduMap.O
         return mBaiduMap;
     }
 
+    /**
+     * 初始化定位
+     * 如需要进入页面时获取位置，则在此方法中开启定位
+     */
+    private void initLocate() {
+    }
+
     @Override
     public void onMapLoaded() {
     }
@@ -122,6 +129,7 @@ public abstract class BaseMapActivity extends BaseActivity implements BaiduMap.O
     protected void onResume() {
         mMapView.onResume();
         super.onResume();
+        initLocate();
     }
 
     @Override

@@ -17,7 +17,7 @@ import com.github.yusongliang.library.util.MPermissionChecker;
  */
 public abstract class BaseActivity extends AppCompatActivity implements MPermissionChecker.Callback {
 
-    private AlertDialog.Builder mBuilder;
+    private AlertDialog mDialog;
 
     /**
      * 安卓6.0以上检查权限
@@ -43,25 +43,45 @@ public abstract class BaseActivity extends AppCompatActivity implements MPermiss
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
+    /**
+     * 弹出权限说明Dialog
+     *
+     * @param message 权限说明文字
+     */
     protected void showRationaleDialog(String message) {
-        mBuilder = new AlertDialog.Builder(this).setMessage(message);
-        showDialog();
+        showRationaleDialog(message, 0);
     }
 
+    /**
+     * 弹出权限说明Dialog
+     *
+     * @param messageId 权限说明文字资源id
+     */
     protected void showRationaleDialog(@StringRes int messageId) {
-        mBuilder = new AlertDialog.Builder(this).setMessage(messageId);
-        showDialog();
+        showRationaleDialog(null, messageId);
     }
 
-    private void showDialog() {
-        mBuilder.setNegativeButton(R.string.negative_button_text, null)
-                .setPositiveButton(R.string.positive_button_text, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                        intent.setData(Uri.parse("package:" + getPackageName()));
-                        startActivity(intent);
-                    }
-                }).show();
+    /**
+     * 弹出权限说明Dialog
+     *
+     * @param message   权限说明文字
+     * @param messageId 权限说明文字资源id
+     */
+    private void showRationaleDialog(String message, @StringRes int messageId) {
+        if (mDialog == null || !mDialog.isShowing()) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                    .setNegativeButton(R.string.negative_button_text, null)
+                    .setPositiveButton(R.string.positive_button_text, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                            intent.setData(Uri.parse("package:" + getPackageName()));
+                            startActivity(intent);
+                        }
+                    });
+            if (messageId == 0) builder.setMessage(message);
+            else builder.setMessage(messageId);
+            mDialog = builder.show();
+        }
     }
 }
