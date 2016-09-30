@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">baidumaphelper</string>
+    <string name="app_name">BaiduMapHelper</string>
+    <string name="negative_button_text">放弃</string>
+    <string name="positive_button_text">去开启</string>
 </resources>

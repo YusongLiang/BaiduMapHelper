@@ -3,4 +3,5 @@
     <string name="app_name">BaiduMapHelper</string>
     <string name="main_label">功能演示列表</string>
     <string name="locate">获取当前位置</string>
+    <string name="request_location_permissions_rationale">需要允许位置信息和电话的权限，否则将无法获取当前位置</string>
 </resources>

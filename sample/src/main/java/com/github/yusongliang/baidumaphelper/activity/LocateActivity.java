@@ -1,6 +1,11 @@
 package com.github.yusongliang.baidumaphelper.activity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.Button;
@@ -71,6 +76,15 @@ public class LocateActivity extends BaseActivity implements View.OnClickListener
                 if (successPermissions.length == PermissionRes.PermissionGroup.PERMISSIONS_LOCATE.length) {
                     mLocator.start();
                 }
+                break;
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsFail(int requestCode, String[] failPermissions) {
+        switch (requestCode) {
+            case PermissionRes.RequestCode.REQUEST_PERMISSIONS_LOCATE:
+                showRationaleDialog(R.string.request_location_permissions_rationale);
                 break;
         }
     }
