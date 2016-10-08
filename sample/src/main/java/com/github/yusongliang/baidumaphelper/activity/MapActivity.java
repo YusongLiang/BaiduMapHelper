@@ -35,7 +35,6 @@ public class MapActivity extends BaseMapActivity {
         super.initMapState();
         checkMPermissions(PermissionRes.RequestCode.REQUEST_PERMISSIONS_LOCATE,
                 PermissionRes.PermissionGroup.PERMISSIONS_LOCATE);
-
     }
 
     @Override

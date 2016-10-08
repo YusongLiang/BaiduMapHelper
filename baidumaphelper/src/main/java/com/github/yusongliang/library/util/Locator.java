@@ -1,5 +1,6 @@
 package com.github.yusongliang.library.util;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -25,22 +26,30 @@ public class Locator {
      * 默认定位时间间隔
      */
     private static final int DEFAULT_LOCATE_SPAN = 1000;
-    private static Context mContext;
+
     private static BaiduMap mBaiduMap;
+
+    private final Context mContext;
+
     private LocationClient mLocationClient;
+
     private boolean isFirst = true;
+
+    @SuppressLint("StaticFieldLeak")
     private static Locator mLocator;
+
     private static OnLocatedListener mOnLocatedListener;
+
     private BitmapDescriptor mMyLocBmpDescriptor;
 
-    private Locator() {
+    private Locator(Context context) {
+        mContext = context;
     }
-
 
     /**
      * 获取定位器实例
      *
-     * @param context 传入applicationContext
+     * @param context 传入Context
      * @return 定位器实例
      */
     public static Locator getInstance(Context context) {
@@ -50,7 +59,7 @@ public class Locator {
     /**
      * 获取定位器实例
      *
-     * @param context  传入applicationContext
+     * @param context  传入Context
      * @param baiduMap BaiduMap对象
      * @return 定位器实例
      */
@@ -61,18 +70,20 @@ public class Locator {
     /**
      * 获取定位器实例
      *
-     * @param context           传入applicationContext
+     * @param context           传入Context
      * @param baiduMap          BaiduMap对象
      * @param onLocatedListener 定位监听器
      * @return 定位器实例
      */
     public static Locator getInstance(Context context, BaiduMap baiduMap, OnLocatedListener onLocatedListener) {
         Log.d(TagConfig.LOG_TAG_LOCATE, "创建定位器实例");
-        mContext = context;
         mBaiduMap = baiduMap;
         mOnLocatedListener = onLocatedListener;
-        if (mLocator == null) mLocator = new Locator();
-        else mLocator.stop();
+        if (mLocator == null) {
+            mLocator = new Locator(context.getApplicationContext());//传入ApplicationContext,防止出现内存泄漏问题
+        } else {
+            mLocator.stop();
+        }
         return mLocator;
     }
 
