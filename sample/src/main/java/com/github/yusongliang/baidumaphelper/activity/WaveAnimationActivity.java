@@ -13,7 +13,15 @@ import java.util.List;
  * 波浪动画演示界面
  */
 public class WaveAnimationActivity extends BaseMapActivity {
+
+    /**
+     * 最大波浪数量
+     */
     private static final int MAX_ANIMATION_COUNT = 20;
+
+    /**
+     * 显示的波浪动画集合
+     */
     private List<WaveAnimation> mAnimList = new ArrayList<>();
 
     @Override
@@ -29,7 +37,6 @@ public class WaveAnimationActivity extends BaseMapActivity {
     @Override
     protected void initMapState() {
         super.initMapState();
-
     }
 
     @Override
